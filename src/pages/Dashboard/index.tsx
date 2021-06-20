@@ -4,7 +4,7 @@ import api from '../../services/api'
 
 import logoImg from '../../assets/logo.svg'
 
-import { Title, Form, Repositories } from './styles'
+import { Title, Form, Repositories, Error } from './styles'
 
 interface Repository {
   full_name: string
@@ -17,6 +17,7 @@ interface Repository {
 
 const Dashboard = () => {
   const [newRepo, setNewRepo] = useState('')
+  const [inputError, setInputError] = useState('')
   const [repositories, setRepositories] = useState<Repository[]>([])
 
   async function handleAddRepository(
@@ -24,12 +25,22 @@ const Dashboard = () => {
   ): Promise<void> {
     event.preventDefault()
 
-    const response = await api.get<Repository>(`repos/${newRepo}`)
+    if (!newRepo) {
+      setInputError('Type the author/name of the repository!')
+      return
+    }
 
-    const repository = response.data
+    try {
+      const response = await api.get<Repository>(`repos/${newRepo}`)
 
-    setRepositories([...repositories, repository])
-    setNewRepo('')
+      const repository = response.data
+
+      setRepositories([...repositories, repository])
+      setNewRepo('')
+      setInputError('')
+    } catch (error) {
+      setInputError('Error searching for this repository!')
+    }
   }
 
   return (
@@ -37,18 +48,20 @@ const Dashboard = () => {
       <img src={logoImg} alt="Github Explorer Logo" />
       <Title>Explore repositories on Github</Title>
 
-      <Form onSubmit={handleAddRepository}>
+      <Form $hasError={!!inputError} onSubmit={handleAddRepository}>
         <input
           value={newRepo}
           onChange={e => setNewRepo(e.target.value)}
-          placeholder="Digite o nome do repositório"
+          placeholder="Type the author/name of the repository"
         />
         <button type="submit">Search</button>
       </Form>
 
+      {inputError && <Error>{inputError}</Error>}
+
       <Repositories>
         {repositories.map(repository => (
-          <a key={repository.full_name} href="teste">
+          <a key={repository.full_name} href="test">
             <img
               src={repository.owner.avatar_url}
               alt={repository.owner.login}
