@@ -24,13 +24,23 @@
         "prettier"
     ],
     "rules": {
-      "import/prefer-default-export": "off",
-      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-empty-function": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-use-before-define": [
+        "error"
+      ],
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      // "@typescript-eslint/explicit-function-return-type": [
+      //   "error",
+      //   {
+      //     "allowExpressions": true
+      //   }
+      // ],
       // "@typescript-eslint/no-unused-vars": ["error", {
-      //   "argsIgnorePattern": "_"
-      // }],
+        //   "argsIgnorePattern": "_"
+        // }],
       "react-hooks/rules-of-hooks": "error",
+      "import/prefer-default-export": "off",
       "react-hooks/exhaustive-deps": "warn",
       "react/jsx-filename-extension": [
         1,
@@ -44,9 +54,6 @@
       "class-methods-use-this": "off",
       "no-console": "off",
       "camelcase": "off",
-      "@typescript-eslint/no-use-before-define": [
-        "error"
-      ],
       "react/react-in-jsx-scope": "off",
       "import/extensions": [
         "error",
